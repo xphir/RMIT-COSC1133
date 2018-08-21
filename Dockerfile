@@ -43,23 +43,25 @@ RUN \
 	#./tmp/berryconda.sh -b -p /home/fishy/berryconda3 &&\
 	#installing fish shell
 	echo "**** compling fish from source ****" && \
-	curl -o /tmp/fish.tar.gz -L "${FISH_SHELL_LINK}" && \
-	mkdir /tmp/fishbuild &&\
-	tar -xzf /tmp/fish.tar.gz --directory /tmp/fishbuild && \
-	cd /tmp/fishbuild/fish-2.7.1 && \
-	./configure; make; make install &&\
+	#curl -o /tmp/fish.tar.gz -L "${FISH_SHELL_LINK}" && \
+	#mkdir /tmp/fishbuild &&\
+	#tar -xzf /tmp/fish.tar.gz --directory /tmp/fishbuild && \
+	#cd /tmp/fishbuild/fish-2.7.1 && \
+	#./configure; make; make install &&\
 	#cleanup install
 	echo "**** cleanup ****" && \
 	apt-get clean && \
 	rm -rf \
 	/tmp/* \
 	/var/lib/apt/lists/* \
-	/var/tmp/*
-	
+	/var/tmp/* &&\
+	#Set mrfishy password
+	git clone git clone git@github.com:fish-shell/fish-shell.git /tmp/ &&\
+	MRFISHY_PASSWORD=`pwgen -c -n -1 12` &&\
+	echo "mrfishy:$MRFISHY_PASSWORD" | chpasswd &&\
+	echo "mrfishy login password: $MRFISHY_PASSWORD"
+
 EXPOSE 80
 EXPOSE 22
 
 #Script sets the password for mrfishy and prints it to screen - use [docker logs <container name> | grep 'root login password']
-ADD start.sh /start.sh
-RUN chmod 0755 /start.sh
-CMD /start.sh
