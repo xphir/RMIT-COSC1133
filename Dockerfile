@@ -20,7 +20,8 @@ RUN \
 	vim \
 	vim-gtk3 \
 	nginx \
-	openssh-server\
+	openssh-server \
+	pwgen \
 	#packages for compling from source
 	make \
 	build-essential \

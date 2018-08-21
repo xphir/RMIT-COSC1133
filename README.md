@@ -34,7 +34,7 @@ If the github repo is private you need to git clone/pull
 git clone git@github.com:rmit-s3530160-elliot-schot/COSC1133.git
 cd COSC1133/
 docker build -t s3530160/ssh .
-docker run -it -p 100:80 -p 20160:22 -p 50160:80 --name assignment01 s3530160/ssh
+docker run -it -p 20160:22 -p 50160:80 --name assignment01 s3530160/ssh
 ```
 
 -----------
