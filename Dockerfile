@@ -9,7 +9,6 @@ ARG BERRYCONDA_LINK="https://github.com/jjhelmus/berryconda/releases/download/v2
 
 ############## build stage ##############
 RUN \
-	echo "Last 4 digits of my student number: ${LAST_4_DIGIT_STUDENT_NUMBER}" &&\
 	echo "**** install build packages ****" && \
 	apt-get update && \
 	apt-get upgrade -y && \
@@ -30,57 +29,63 @@ RUN \
 	libncurses5-dev \
 	gettext \
 	mktemp \
-	autoconf &&\
-	#SSH config settings
-	echo "**** disable ssh root login ****" && \
-	#sed -i 's/#\?\(Port\s*\).*$/\1 20160/' /etc/ssh/sshd_config &&\
-	sed -i 's/#\?\(PermitRootLogin\s*\).*$/\1 no/' /etc/ssh/sshd_config &&\
+	autoconf \
+	fish &&\
 	#Create mrFishy
 	echo "**** create mrfishy ****" && \
 	MRFISHY_PASSWORD=`pwgen -c -n -1 12` && \
-	useradd -m -s /usr/local/bin/fish -d /home/fishy -c "Fish Fish" -p "$MRFISHY_PASSWORD" -G root mrfishy  && \
+	useradd -m -s /usr/local/bin/fish -d /home/fishy -c "Fish Fish" -G root mrfishy  && \
+	echo "mrfishy:cosc1133" | chpasswd && \
+	#SSH config settings
+	echo "**** disable ssh root login ****" && \
+ 	sed -i 's/#\?\(PermitRootLogin\s*\).*$/\1 no/' /etc/ssh/sshd_config &&\
 	#Installing berryconda
 	echo "**** installing berryconda ****" && \
 	curl -o /tmp/berryconda.sh -L "${BERRYCONDA_LINK}" && \
 	chmod +x /tmp/berryconda.sh &&\
-	./tmp/berryconda.sh -b -p /home/fishy/berryconda3 &&\
+	./tmp/berryconda.sh -b -p /usr/bin/berryconda3 &&\
+	echo "PATH=/usr/bin/berryconda3/bin:$PATH" > /etc/profile.d/berryconda.sh && \
 	#installing fish shell
-	echo "**** compling fish from source ****" && \
-	curl -o /tmp/fish.tar.gz -L "${FISH_SHELL_LINK}" && \
-	mkdir /tmp/fishbuild &&\
-	tar -xzf /tmp/fish.tar.gz --directory /tmp/fishbuild && \
-	cd /tmp/fishbuild/fish-2.7.1 && \
-	./configure; make; make install &&\
-	#cleanup install
-	echo "**** cleanup ****" && \
-	apt-get clean && \
-	rm -rf \
-	/tmp/* \
-	/var/lib/apt/lists/* \
-	/var/tmp/* &&\
-	#Set mrfishy password
-	echo "mrfishy login password: $MRFISHY_PASSWORD"
-
-EXPOSE 80
-EXPOSE 22
-
-#Script sets the password for mrfishy and prints it to screen - use [docker logs <container name> | grep 'root login password']
-
-	#cmake fishshell install
-	#curl -o /tmp/fish.zip -L "https://github.com/fish-shell/fish-shell/archive/master.zip" &&\
-	#unzip /tmp/fish.zip -d /tmp/ && \
-	#mkdir /tmp/fish-shell-master/build &&\
-	#cd /tmp/fish-shell-master/build && \
-	#cmake .. && \
-	#make && \
-	#make install && \
-
+	#echo "**** compling fish from source ****" && \
 	#curl -o /tmp/fish.tar.gz -L "${FISH_SHELL_LINK}" && \
 	#mkdir /tmp/fishbuild &&\
 	#tar -xzf /tmp/fish.tar.gz --directory /tmp/fishbuild && \
 	#cd /tmp/fishbuild/fish-2.7.1 && \
 	#./configure; make; make install &&\
 	#cleanup install
+	echo "**** cleanup ****" && \
+	apt-get clean && \
+	rm -rf \
+	/tmp/* \
+	/var/lib/apt/lists/* \
+	/var/tmp/*
 
-		#MRFISHY_PASSWORD=`pwgen -c -n -1 12` &&\
-	#echo "mrfishy:$MRFISHY_PASSWORD" | chpasswd &&\
+EXPOSE 80
+EXPOSE 22
+
+# Called on first run of docker - will run supervisor
+ADD start.sh /start.sh
+RUN chmod 0755 /start.sh
+
+CMD /start.sh
+
+#Script sets the password for mrfishy and prints it to screen - use [docker logs <container name> | grep 'root login password']
+
+#cmake fishshell install
+#curl -o /tmp/fish.zip -L "https://github.com/fish-shell/fish-shell/archive/master.zip" &&\
+#unzip /tmp/fish.zip -d /tmp/ && \
+#mkdir /tmp/fish-shell-master/build &&\
+#cd /tmp/fish-shell-master/build && \
+#cmake .. && \
+#make && \
+#make install && \
+
+#curl -o /tmp/fish.tar.gz -L "${FISH_SHELL_LINK}" && \
+#mkdir /tmp/fishbuild &&\
+#tar -xzf /tmp/fish.tar.gz --directory /tmp/fishbuild && \
+#cd /tmp/fishbuild/fish-2.7.1 && \
+#./configure; make; make install &&\
+#cleanup install
+
+#MRFISHY_PASSWORD=`pwgen -c -n -1 12` &&\
+#echo "mrfishy:$MRFISHY_PASSWORD" | chpasswd &&\
