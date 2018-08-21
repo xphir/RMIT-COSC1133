@@ -61,9 +61,7 @@ RUN \
 	#/var/lib/apt/lists/* \
 	#/var/tmp/* &&\
 	#cmake fishshell install
-
 	#Set mrfishy password
-
 	echo "mrfishy login password: $MRFISHY_PASSWORD"
 
 EXPOSE 80
