@@ -30,6 +30,7 @@ RUN \
 	gettext \
 	mktemp \
 	autoconf \
+	supervisor \
 	fish &&\
 	#Create mrFishy
 	echo "**** create mrfishy ****" && \

@@ -8,4 +8,4 @@ echo "mrfishy:cosc1133" | chpasswd
 
 #keep container open/running
 
-while true; do sleep 1000; done
+supervisord -n
