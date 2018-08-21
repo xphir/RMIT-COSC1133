@@ -5,8 +5,7 @@
 
 #ROOT_PASSWORD=`pwgen -c -n -1 12`
 PASSWORD='assignment'
-#echo "mrfishy:$PASSWORD" | chpasswd
-echo -e "$PASSWORD\n$PASSWORD" | passwd mrfishy
+echo "mrfishy:$PASSWORD" | chpasswd
 echo "mrfishy login password: $PASSWORD"
 
 /etc/init.d/ssh start
