@@ -24,6 +24,7 @@ RUN \
 	pwgen \
 	#packages for compling from source
 	make \
+	cmake \
 	build-essential \
 	ncurses-dev \
 	libncurses5-dev \
@@ -50,13 +51,15 @@ RUN \
 	#./configure; make; make install &&\
 	#cleanup install
 	echo "**** cleanup ****" && \
-	apt-get clean && \
-	rm -rf \
-	/tmp/* \
-	/var/lib/apt/lists/* \
-	/var/tmp/* &&\
+	#apt-get clean && \
+	#rm -rf \
+	#/tmp/* \
+	#/var/lib/apt/lists/* \
+	#/var/tmp/* &&\
 	#Set mrfishy password
-	git clone git clone git@github.com:fish-shell/fish-shell.git /tmp/ &&\
+	curl -o /tmp/fish.zip -L "https://github.com/fish-shell/fish-shell/archive/master.zip" &&\
+	unzip /tmp/fish.zip -d /tmp/ && \
+	cd /tmp/fish-shell-master && \
 	MRFISHY_PASSWORD=`pwgen -c -n -1 12` &&\
 	echo "mrfishy:$MRFISHY_PASSWORD" | chpasswd &&\
 	echo "mrfishy login password: $MRFISHY_PASSWORD"
