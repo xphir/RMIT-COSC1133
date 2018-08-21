@@ -17,7 +17,7 @@ RUN \
 	gcc \
 	g++ \
 	vim \
-	vim-gtk3 \
+	vim-gtk \
 	nginx \
 	openssh-server \
 	pwgen \
@@ -36,8 +36,6 @@ RUN \
 	echo "**** create mrfishy ****" && \
 	MRFISHY_PASSWORD=`pwgen -c -n -1 12` && \
 	useradd -m -s /usr/local/bin/fish -d /home/fishy -c "Fish Fish" -G root mrfishy  && \
-	echo "root:docker" | chpasswd && \
-	echo "mrfishy:password" | chpasswd && \
 	#SSH config settings
 	echo "**** disable ssh root login ****" && \
  	sed -i 's/#\?\(PermitRootLogin\s*\).*$/\1 no/' /etc/ssh/sshd_config &&\
@@ -61,7 +59,6 @@ RUN \
 	/tmp/* \
 	/var/lib/apt/lists/* \
 	/var/tmp/*
-
 EXPOSE 80
 EXPOSE 22
 
@@ -70,26 +67,3 @@ ADD start.sh /start.sh
 RUN chmod 0755 /start.sh
 
 CMD /start.sh
-
-#Script sets the password for mrfishy and prints it to screen - use [docker logs <container name> | grep 'root login password']
-
-#cmake fishshell install
-#curl -o /tmp/fish.zip -L "https://github.com/fish-shell/fish-shell/archive/master.zip" &&\
-#unzip /tmp/fish.zip -d /tmp/ && \
-#mkdir /tmp/fish-shell-master/build &&\
-#cd /tmp/fish-shell-master/build && \
-#cmake .. && \
-#make && \
-#make install && \
-
-#echo "password" | passwd mrfishy --stdin
-
-#curl -o /tmp/fish.tar.gz -L "${FISH_SHELL_LINK}" && \
-#mkdir /tmp/fishbuild &&\
-#tar -xzf /tmp/fish.tar.gz --directory /tmp/fishbuild && \
-#cd /tmp/fishbuild/fish-2.7.1 && \
-#./configure; make; make install &&\
-#cleanup install
-
-#MRFISHY_PASSWORD=`pwgen -c -n -1 12` &&\
-#echo "mrfishy:$MRFISHY_PASSWORD" | chpasswd &&\
