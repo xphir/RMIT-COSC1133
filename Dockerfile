@@ -37,29 +37,27 @@ RUN \
 	sed -i 's/#\?\(PermitRootLogin\s*\).*$/\1 no/' /etc/ssh/sshd_config &&\
 	#Create mrFishy
 	echo "**** create mrfishy ****" && \
-	MRFISHY_PASSWORD=`pwgen -c -n -1 12` &&\
-	useradd -m -s /usr/local/bin/fish -d /home/fishy -c "Fish Fish" mrfishy -p "$MRFISHY_PASSWORD" &&\
+	MRFISHY_PASSWORD=`pwgen -c -n -1 12` && \
+	useradd -m -s /usr/local/bin/fish -d /home/fishy -c "Fish Fish" -p "$MRFISHY_PASSWORD" -G root mrfishy  && \
 	#Installing berryconda
 	echo "**** installing berryconda ****" && \
 	curl -o /tmp/berryconda.sh -L "${BERRYCONDA_LINK}" && \
 	chmod +x /tmp/berryconda.sh &&\
-	#./tmp/berryconda.sh -b -p /home/fishy/berryconda3 &&\
+	./tmp/berryconda.sh -b -p /home/fishy/berryconda3 &&\
 	#installing fish shell
 	echo "**** compling fish from source ****" && \
-	curl -o /tmp/fish.zip -L "https://github.com/fish-shell/fish-shell/archive/master.zip" &&\
-	unzip /tmp/fish.zip -d /tmp/ && \
-	mkdir /tmp/fish-shell-master/build &&\
-	cd /tmp/fish-shell-master/build && \
-	cmake .. && \
-	make && \
-	make install && \
+	curl -o /tmp/fish.tar.gz -L "${FISH_SHELL_LINK}" && \
+	mkdir /tmp/fishbuild &&\
+	tar -xzf /tmp/fish.tar.gz --directory /tmp/fishbuild && \
+	cd /tmp/fishbuild/fish-2.7.1 && \
+	./configure; make; make install &&\
+	#cleanup install
 	echo "**** cleanup ****" && \
-	#apt-get clean && \
-	#rm -rf \
-	#/tmp/* \
-	#/var/lib/apt/lists/* \
-	#/var/tmp/* &&\
-	#cmake fishshell install
+	apt-get clean && \
+	rm -rf \
+	/tmp/* \
+	/var/lib/apt/lists/* \
+	/var/tmp/* &&\
 	#Set mrfishy password
 	echo "mrfishy login password: $MRFISHY_PASSWORD"
 
@@ -68,6 +66,14 @@ EXPOSE 22
 
 #Script sets the password for mrfishy and prints it to screen - use [docker logs <container name> | grep 'root login password']
 
+	#cmake fishshell install
+	#curl -o /tmp/fish.zip -L "https://github.com/fish-shell/fish-shell/archive/master.zip" &&\
+	#unzip /tmp/fish.zip -d /tmp/ && \
+	#mkdir /tmp/fish-shell-master/build &&\
+	#cd /tmp/fish-shell-master/build && \
+	#cmake .. && \
+	#make && \
+	#make install && \
 
 	#curl -o /tmp/fish.tar.gz -L "${FISH_SHELL_LINK}" && \
 	#mkdir /tmp/fishbuild &&\
