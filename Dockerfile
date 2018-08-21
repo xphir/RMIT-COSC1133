@@ -35,7 +35,6 @@ RUN \
 	echo "**** create mrfishy ****" && \
 	MRFISHY_PASSWORD=`pwgen -c -n -1 12` && \
 	useradd -m -s /usr/local/bin/fish -d /home/fishy -c "Fish Fish" -G root mrfishy  && \
-	echo "mrfishy:cosc1133" | chpasswd && \
 	#SSH config settings
 	echo "**** disable ssh root login ****" && \
  	sed -i 's/#\?\(PermitRootLogin\s*\).*$/\1 no/' /etc/ssh/sshd_config &&\

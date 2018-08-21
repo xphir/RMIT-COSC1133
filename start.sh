@@ -4,3 +4,4 @@
 # out when the container is first created here
 /etc/init.d/ssh start
 /etc/init.d/nginx start
+echo "mrfishy:cosc1133" | chpasswd
