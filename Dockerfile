@@ -30,7 +30,6 @@ RUN \
 	libncurses5-dev \
 	gettext \
 	mktemp \
-	seq \
 	autoconf &&\
 	#SSH config settings
 	echo "**** disable ssh root login ****" && \
