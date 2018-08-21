@@ -29,6 +29,8 @@ RUN \
 	ncurses-dev \
 	libncurses5-dev \
 	gettext \
+	mktemp \
+	seq \
 	autoconf &&\
 	#SSH config settings
 	echo "**** disable ssh root login ****" && \
@@ -36,35 +38,46 @@ RUN \
 	sed -i 's/#\?\(PermitRootLogin\s*\).*$/\1 no/' /etc/ssh/sshd_config &&\
 	#Create mrFishy
 	echo "**** create mrfishy ****" && \
-	useradd -m -s /usr/local/bin/fish -d /home/fishy -c "Fish Fish" mrfishy &&\
+	MRFISHY_PASSWORD=`pwgen -c -n -1 12` &&\
+	useradd -m -s /usr/local/bin/fish -d /home/fishy -c "Fish Fish" mrfishy -p "$MRFISHY_PASSWORD" &&\
 	#Installing berryconda
-	#echo "**** installing berryconda ****" && \
-	#curl -o /tmp/berryconda.sh -L "${BERRYCONDA_LINK}" && \
-	#chmod +x /tmp/berryconda.sh &&\
+	echo "**** installing berryconda ****" && \
+	curl -o /tmp/berryconda.sh -L "${BERRYCONDA_LINK}" && \
+	chmod +x /tmp/berryconda.sh &&\
 	#./tmp/berryconda.sh -b -p /home/fishy/berryconda3 &&\
 	#installing fish shell
 	echo "**** compling fish from source ****" && \
-	#curl -o /tmp/fish.tar.gz -L "${FISH_SHELL_LINK}" && \
-	#mkdir /tmp/fishbuild &&\
-	#tar -xzf /tmp/fish.tar.gz --directory /tmp/fishbuild && \
-	#cd /tmp/fishbuild/fish-2.7.1 && \
-	#./configure; make; make install &&\
-	#cleanup install
+	curl -o /tmp/fish.zip -L "https://github.com/fish-shell/fish-shell/archive/master.zip" &&\
+	unzip /tmp/fish.zip -d /tmp/ && \
+	mkdir /tmp/fish-shell-master/build &&\
+	cd /tmp/fish-shell-master/build && \
+	cmake .. && \
+	make && \
+	make install && \
 	echo "**** cleanup ****" && \
 	#apt-get clean && \
 	#rm -rf \
 	#/tmp/* \
 	#/var/lib/apt/lists/* \
 	#/var/tmp/* &&\
+	#cmake fishshell install
+
 	#Set mrfishy password
-	curl -o /tmp/fish.zip -L "https://github.com/fish-shell/fish-shell/archive/master.zip" &&\
-	unzip /tmp/fish.zip -d /tmp/ && \
-	cd /tmp/fish-shell-master && \
-	MRFISHY_PASSWORD=`pwgen -c -n -1 12` &&\
-	echo "mrfishy:$MRFISHY_PASSWORD" | chpasswd &&\
+
 	echo "mrfishy login password: $MRFISHY_PASSWORD"
 
 EXPOSE 80
 EXPOSE 22
 
 #Script sets the password for mrfishy and prints it to screen - use [docker logs <container name> | grep 'root login password']
+
+
+	#curl -o /tmp/fish.tar.gz -L "${FISH_SHELL_LINK}" && \
+	#mkdir /tmp/fishbuild &&\
+	#tar -xzf /tmp/fish.tar.gz --directory /tmp/fishbuild && \
+	#cd /tmp/fishbuild/fish-2.7.1 && \
+	#./configure; make; make install &&\
+	#cleanup install
+
+		#MRFISHY_PASSWORD=`pwgen -c -n -1 12` &&\
+	#echo "mrfishy:$MRFISHY_PASSWORD" | chpasswd &&\
