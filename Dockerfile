@@ -9,7 +9,7 @@ ARG BERRYCONDA_LINK="https://github.com/jjhelmus/berryconda/releases/download/v2
 
 ############## build stage ##############
 RUN \
-	echo "Last 4 digits of my student number: $LAST_4_DIGIT_STUDENT_NUMBER" &&\
+	echo "Last 4 digits of my student number: ${LAST_4_DIGIT_STUDENT_NUMBER}" &&\
 	echo "**** install build packages ****" && \
 	apt-get update && \
 	apt-get upgrade -y && \
