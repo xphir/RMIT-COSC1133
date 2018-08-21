@@ -5,8 +5,10 @@
 /etc/init.d/ssh start
 /etc/init.d/nginx start
 
-#keep container open/running
-echo "root:docker" | chpasswd
-echo "mrfishy:password" | chpasswd
+#ROOT_PASSWORD=`pwgen -c -n -1 12`
+PASSWORD='assignment'
+#echo "mrfishy:$PASSWORD" | chpasswd
+echo -e "$PASSWORD\n$PASSWORD" | passwd mrfishy
+echo "mrfishy login password: $PASSWORD"
 
 while true; do sleep 1000; done
