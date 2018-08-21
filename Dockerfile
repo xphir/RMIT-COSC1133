@@ -3,15 +3,16 @@ FROM debian
 LABEL maintainer="Elliot Schot <s3530160@student.rmit.edu.au>"
 
 ARG LAST_4_DIGIT_STUDENT_NUMBER=0160
-
 ARG FISH_SHELL_LINK="https://github.com/fish-shell/fish-shell/releases/download/2.7.1/fish-2.7.1.tar.gz"
 ARG BERRYCONDA_LINK="https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh"
 
 ############## build stage ##############
 RUN \
-	echo "**** install build packages ****" && \
+	echo "**** update and upgrade ****" && \
 	apt-get update && \
-	apt-get upgrade -y && \
+	apt-get upgrade -y
+RUN \
+	echo "**** install build packages ****" && \
 	apt-get install -y \
 	#packages requested
 	gcc \
@@ -30,21 +31,25 @@ RUN \
 	gettext \
 	mktemp \
 	autoconf \
-	supervisor \
-	fish &&\
+	#supervisor \
+	fish
+	
+RUN \
 	#Create mrFishy
 	echo "**** create mrfishy ****" && \
 	MRFISHY_PASSWORD=`pwgen -c -n -1 12` && \
 	useradd -m -s /usr/local/bin/fish -d /home/fishy -c "Fish Fish" -G root mrfishy  && \
 	#SSH config settings
 	echo "**** disable ssh root login ****" && \
- 	sed -i 's/#\?\(PermitRootLogin\s*\).*$/\1 no/' /etc/ssh/sshd_config &&\
+ 	sed -i 's/#\?\(PermitRootLogin\s*\).*$/\1 no/' /etc/ssh/sshd_config
+RUN \
 	#Installing berryconda
 	echo "**** installing berryconda ****" && \
 	curl -o /tmp/berryconda.sh -L "${BERRYCONDA_LINK}" && \
 	chmod +x /tmp/berryconda.sh &&\
 	./tmp/berryconda.sh -b -p /usr/bin/berryconda3 &&\
-	echo "PATH=/usr/bin/berryconda3/bin:$PATH" > /etc/profile.d/berryconda.sh && \
+	echo "PATH=/usr/bin/berryconda3/bin:$PATH" > /etc/profile.d/berryconda.sh
+#RUN \
 	#installing fish shell
 	#echo "**** compling fish from source ****" && \
 	#curl -o /tmp/fish.tar.gz -L "${FISH_SHELL_LINK}" && \
@@ -53,12 +58,14 @@ RUN \
 	#cd /tmp/fishbuild/fish-2.7.1 && \
 	#./configure; make; make install &&\
 	#cleanup install
+RUN \
 	echo "**** cleanup ****" && \
 	apt-get clean && \
 	rm -rf \
 	/tmp/* \
 	/var/lib/apt/lists/* \
 	/var/tmp/*
+
 EXPOSE 80
 EXPOSE 22
 
