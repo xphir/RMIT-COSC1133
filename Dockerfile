@@ -3,18 +3,31 @@ FROM debian
 LABEL maintainer="Elliot Schot <s3530160@student.rmit.edu.au>"
 
 ARG LAST_4_DIGIT_STUDENT_NUMBER=0160
+
 ARG FISH_SHELL_LINK="https://github.com/fish-shell/fish-shell/releases/download/2.7.1/fish-2.7.1.tar.gz"
 ARG BERRYCONDA_LINK="https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh"
 
 ############## build stage ##############
 RUN \
+	echo "Last 4 digits of my student number: $LAST_4_DIGIT_STUDENT_NUMBER" &&\
 	echo "**** install build packages ****" && \
 	apt-get update && \
 	apt-get upgrade -y && \
 	apt-get install -y \
-	gcc g++ vim vim-gtk3 nginx openssh-server\
+	#packages requested
+	gcc \
+	g++ \
+	vim \
+	vim-gtk3 \
+	nginx \
+	openssh-server\
 	#packages for compling from source
-	make build-essential ncurses-dev libncurses5-dev gettext autoconf &&\
+	make \
+	build-essential \
+	ncurses-dev \
+	libncurses5-dev \
+	gettext \
+	autoconf &&\
 	echo "**** disable ssh root login ****" && \
 	sed -i 's/#\?\(PermitRootLogin\s*\).*$/\1 no/' /etc/ssh/sshd_config &&\
 	echo "**** create mrfishy ****" && \
@@ -39,8 +52,8 @@ RUN \
 EXPOSE 80:5${LAST_4_DIGIT_STUDENT_NUMBER}
 EXPOSE 22:2${LAST_4_DIGIT_STUDENT_NUMBER}
 
+#Script sets the password for mrfishy and prints it to screen - use [docker logs <container name> | grep 'root login password']
 ADD start.sh /start.sh
-
 CMD /start.sh
 
 #what do we set the mrfishy password as?
