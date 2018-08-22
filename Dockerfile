@@ -67,7 +67,7 @@ RUN \
 	curl -o /tmp/berryconda.sh -L "https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh" && \
 	chmod +x /tmp/berryconda.sh && \
 	./tmp/berryconda.sh -b -p /usr/bin/berryconda3
-	# echo "PATH=/usr/bin/berryconda3/bin:$PATH" > /etc/profile.d/berryconda.sh
+	#echo "PATH=/usr/bin/berryconda3/bin:$PATH" > /etc/profile.d/berryconda.sh
 RUN \
 	echo "**** cleanup ****" && \
 	apt-get clean && \
@@ -84,8 +84,3 @@ ADD start.sh /start.sh
 RUN chmod 0755 /start.sh
 
 CMD /start.sh ; sleep infinity
-
-#note you will need to run the following in interactive mode (-it or docker attach), as the container seems to cause issues with them
-#service ssh start && service nginx start
-#echo "mrfishy:docker" | chpasswd
-#chsh --shell /usr/local/bin/fish mrfishy
