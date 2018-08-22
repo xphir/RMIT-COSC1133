@@ -1,8 +1,4 @@
 #!/bin/bash
+chown mrfishy:mrfishy /home/fishy/.config/fish/config.fish
 
 service ssh start && service nginx start
-#echo "mrfishy:docker" | chpasswd
-#chsh --shell /usr/local/bin/fish mrfishy
-
-#/etc/init.d/ssh start
-#/etc/init.d/nginx start
