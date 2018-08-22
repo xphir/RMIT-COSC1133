@@ -1,14 +1,10 @@
 #!/bin/bash
 
-# Put any tasks you would like to have carried
-# out when the container is first created here
+service ssh start && service nginx start
+#echo "mrfishy:docker" | chpasswd
+#chsh --shell /usr/local/bin/fish mrfishy
 
-#ROOT_PASSWORD=`pwgen -c -n -1 12`
-PASSWORD='assignment'
-echo "mrfishy:$PASSWORD" | chpasswd
-echo "mrfishy login password: $PASSWORD"
+#/etc/init.d/ssh start
+#/etc/init.d/nginx start
 
-/etc/init.d/ssh start
-/etc/init.d/nginx start
-
-while true; do sleep 1000; done
+#/bin/bash

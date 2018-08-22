@@ -59,7 +59,7 @@ RUN \
 	chsh --shell /usr/local/bin/fish mrfishy && \
 	su mrfishy && \
 	touch /home/fishy/.config/fish/config.fish && \
-	echo "set -gx PATH /usr/local/bin/fish $PATH" >> /home/fishy/.config/fish/config.fish
+	echo "set -gx PATH usr/bin/berryconda3/bin $PATH" >> /home/fishy/.config/fish/config.fish
 RUN \
 	echo "**** installing berryconda ****" && \
 	curl -o /tmp/berryconda.sh -L "https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh" && \
@@ -78,10 +78,10 @@ EXPOSE 80
 EXPOSE 22
 
 # Called on first run of docker - will run supervisor
-#ADD start.sh /start.sh
-#RUN chmod 0755 /start.sh
+ADD start.sh /start.sh
+RUN chmod 0755 /start.sh
 
-#CMD /start.sh
+CMD /start.sh
 
 #note you will need to run the following in interactive mode (-it or docker attach), as the container seems to cause issues with them
 #service ssh start && service nginx start
