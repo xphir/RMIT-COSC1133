@@ -59,8 +59,9 @@ RUN \
 	echo '/usr/local/bin/fish' | tee -a /etc/shells > /dev/null && \
 	chsh --shell /usr/local/bin/fish mrfishy && \
 	su mrfishy && \
-	touch /home/fishy/.config/fish/config.fish
-	echo "set -x PATH usr/bin/berryconda3/bin $PATH" >> /home/fishy/.config/fish/config.fish
+	touch /home/fishy/.config/fish/config.fish && \
+	echo "set -x PATH usr/bin/berryconda3/bin $PATH" >> /home/fishy/.config/fish/config.fish && \
+	chown mrfishy:mrfishy /home/fishy/.config/fish/config.fish
 RUN \
 	echo "**** installing berryconda ****" && \
 	curl -o /tmp/berryconda.sh -L "https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh" && \
