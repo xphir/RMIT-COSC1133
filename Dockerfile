@@ -11,14 +11,15 @@ RUN \
 	echo "**** update and upgrade ****" && \
 	apt-get update && \
 	apt-get upgrade -y
-
 RUN \
+	echo "**** installing base commands ****" && \
 	apt-get install -y \
 	openssh-server \
 	nginx \
 	curl \
 	tar \
 	bzip2 \
+	sudo \
 	nano
 RUN \
 	useradd -m -d /home/fishy -c "Fish Fish" mrfishy && \
@@ -59,7 +60,7 @@ RUN \
 	chsh --shell /usr/local/bin/fish mrfishy && \
 	su mrfishy && \
 	touch /home/fishy/.config/fish/config.fish
-	#echo "set -gx PATH usr/bin/berryconda3/bin $PATH" >> /home/fishy/.config/fish/config.fish
+	#echo "set PATH usr/bin/berryconda3/bin $PATH" >> /home/fishy/.config/fish/config.fish
 RUN \
 	echo "**** installing berryconda ****" && \
 	curl -o /tmp/berryconda.sh -L "https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh" && \
