@@ -1,4 +1,4 @@
-FROM debian:latest AS assignment01
+FROM debian:latest
 
 LABEL maintainer="Elliot Schot <s3530160@student.rmit.edu.au>"
 
