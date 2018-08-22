@@ -7,6 +7,7 @@ Author: Elliot Schot <S3530160@student.rmit.edu.au>
 ##### Container information #####
 
 username: 'mrfishy'
+
 password: 'docker'
 
 ----------------
