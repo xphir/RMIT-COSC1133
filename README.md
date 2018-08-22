@@ -1,28 +1,39 @@
-docker-a1
+Assignment 01 Submission
 ==========
 
-A simple docker container for COSC1133 assignment 01
+Author: Elliot Schot <S3530160@student.rmit.edu.au>
 
-mrfishy password is 'docker'
+----------------
+##### Container information #####
 
-To build the image do:
+username: 'mrfishy'
+password: 'docker'
 
-```
-docker build -t s3530160/ssh git://github.com/rmit-s3530160-elliot-schot/COSC1133
-```
+----------------
 
-To run a container do:
 
-```
-docker run -it -p 100:80 -p 20160:22 -p 50160:80 --name assignment01 s3530160/ssh
-```
+##### To run this docker do:##### 
+
+~~~
+docker run -d -p 2222:22 -p 5555:80 s3530160/cosc1133-A1
+~~~
+
+----------------
+##### To finish do:##### 
+~~~
+docker stop assignment01
+~~~
+~~~
+docker rm assignment01
+~~~
+----------------
 
 To log into your container do:
 
-```
+~~~
 ssh -x myfishy@localhost -p 20160
-```
-
+~~~
+----------------
 
 To run the container localy do:
 note: if the github repo is private you need to git clone/pull 
