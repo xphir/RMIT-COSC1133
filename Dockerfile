@@ -11,53 +11,58 @@ RUN \
 	echo "**** update and upgrade ****" && \
 	apt-get update && \
 	apt-get upgrade -y
+
 RUN \
-	echo "**** install build packages ****" && \
 	apt-get install -y \
-	#packages requested
+	openssh-server \
+	nginx \
+	curl \
+	tar \
+	bzip2 \
+	nano
+RUN \
+	useradd -m -d /home/fishy -c "Fish Fish" mrfishy && \
+	echo "mrfishy:docker" | chpasswd && \
+	usermod -aG sudo mrfishy
+RUN \
+	sed -i 's/#\?\(PermitRootLogin\s*\).*$/\1 no/' /etc/ssh/sshd_config
+RUN \
+	apt-get install -y \
+	vim \
+	vim-gtk
+RUN \
+	apt-get install -y \
 	gcc \
 	g++ \
-	vim \
-	vim-gtk \
-	nginx \
-	openssh-server \
-	pwgen \
-	#packages for compling from source
-	make \
-	cmake \
 	build-essential \
 	ncurses-dev \
 	libncurses5-dev \
 	gettext \
 	mktemp \
-	autoconf \
-	#supervisor \
-	fish
-	
+	autoconf
 RUN \
-	#Create mrFishy
-	echo "**** create mrfishy ****" && \
-	MRFISHY_PASSWORD=`pwgen -c -n -1 12` && \
-	useradd -m -s /usr/local/bin/fish -d /home/fishy -c "Fish Fish" -G root mrfishy  && \
-	#SSH config settings
-	echo "**** disable ssh root login ****" && \
- 	sed -i 's/#\?\(PermitRootLogin\s*\).*$/\1 no/' /etc/ssh/sshd_config
+	apt-get install -y \
+	man \
+	python2.7
 RUN \
-	#Installing berryconda
+	echo "**** compling fish from source ****" && \
+	curl -o /tmp/fish.tar.gz -L "https://github.com/fish-shell/fish-shell/releases/download/2.7.1/fish-2.7.1.tar.gz" && \
+	mkdir /tmp/fishbuild && \
+	tar -xzf /tmp/fish.tar.gz --directory /tmp/fishbuild && \
+	cd /tmp/fishbuild/fish-2.7.1 && \
+	./configure; make; make install
+RUN \
+	echo "**** configure fish shells ****" && \
+	echo '/usr/local/bin/fish' | tee -a /etc/shells > /dev/null && \
+	touch /home/fishy/.config/fish/config.fish && \
+	echo "set -gx PATH /usr/local/bin/fish $PATH" >> /home/fishy/.config/fish/config.fish && \
+	chsh --shell /usr/local/bin/fish mrfishy
+RUN \
 	echo "**** installing berryconda ****" && \
-	curl -o /tmp/berryconda.sh -L "${BERRYCONDA_LINK}" && \
-	chmod +x /tmp/berryconda.sh &&\
+	curl -o /tmp/berryconda.sh -L "https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh" && \
+	chmod +x /tmp/berryconda.sh && \
 	./tmp/berryconda.sh -b -p /usr/bin/berryconda3 &&\
 	echo "PATH=/usr/bin/berryconda3/bin:$PATH" > /etc/profile.d/berryconda.sh
-#RUN \
-	#installing fish shell
-	#echo "**** compling fish from source ****" && \
-	#curl -o /tmp/fish.tar.gz -L "${FISH_SHELL_LINK}" && \
-	#mkdir /tmp/fishbuild &&\
-	#tar -xzf /tmp/fish.tar.gz --directory /tmp/fishbuild && \
-	#cd /tmp/fishbuild/fish-2.7.1 && \
-	#./configure; make; make install &&\
-	#cleanup install
 RUN \
 	echo "**** cleanup ****" && \
 	apt-get clean && \
@@ -74,3 +79,8 @@ ADD start.sh /start.sh
 RUN chmod 0755 /start.sh
 
 CMD /start.sh
+
+#you need to run the following - docker attach <docker name> 
+#service ssh start && service nginx start
+#echo "mrfishy:docker" | chpasswd
+#chsh --shell /usr/local/bin/fish mrfishy
