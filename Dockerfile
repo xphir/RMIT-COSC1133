@@ -52,7 +52,7 @@ RUN \
 	cd /tmp/fishbuild/fish-2.7.1 && \
 	./configure && \
 	make && \
-	make install && \
+	make install
 RUN \
 	echo "**** configure fish shells ****" && \
 	echo '/usr/local/bin/fish' | /etc/shells && \
