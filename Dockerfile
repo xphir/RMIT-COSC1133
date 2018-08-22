@@ -1,4 +1,4 @@
-FROM debian
+FROM debian:latest AS assignment01
 
 LABEL maintainer="Elliot Schot <s3530160@student.rmit.edu.au>"
 
@@ -50,7 +50,9 @@ RUN \
 	mkdir /tmp/fishbuild && \
 	tar -xzf /tmp/fish.tar.gz --directory /tmp/fishbuild && \
 	cd /tmp/fishbuild/fish-2.7.1 && \
-	./configure; make; make install
+	./configure && \
+	make && \
+	make install && \
 RUN \
 	echo "**** configure fish shells ****" && \
 	echo '/usr/local/bin/fish' | tee -a /etc/shells > /dev/null && \
@@ -75,10 +77,10 @@ EXPOSE 80
 EXPOSE 22
 
 # Called on first run of docker - will run supervisor
-ADD start.sh /start.sh
-RUN chmod 0755 /start.sh
+#ADD start.sh /start.sh
+#RUN chmod 0755 /start.sh
 
-CMD /start.sh
+#CMD /start.sh
 
 #you need to run the following - docker attach <docker name> 
 #service ssh start && service nginx start
