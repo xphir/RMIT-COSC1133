@@ -81,7 +81,7 @@ EXPOSE 22
 ADD start.sh /start.sh
 RUN chmod 0755 /start.sh
 
-CMD /start.sh
+CMD /start.sh ; sleep infinity
 
 #note you will need to run the following in interactive mode (-it or docker attach), as the container seems to cause issues with them
 #service ssh start && service nginx start

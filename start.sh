@@ -6,6 +6,3 @@ service ssh start && service nginx start
 
 #/etc/init.d/ssh start
 #/etc/init.d/nginx start
-
-#/bin/bash
-/dev/null
