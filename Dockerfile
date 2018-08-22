@@ -55,7 +55,7 @@ RUN \
 	make install && \
 RUN \
 	echo "**** configure fish shells ****" && \
-	echo '/usr/local/bin/fish' | tee -a /etc/shells > /dev/null && \
+	echo '/usr/local/bin/fish' | /etc/shells && \
 	touch /home/fishy/.config/fish/config.fish && \
 	echo "set -gx PATH /usr/local/bin/fish $PATH" >> /home/fishy/.config/fish/config.fish && \
 	chsh --shell /usr/local/bin/fish mrfishy
