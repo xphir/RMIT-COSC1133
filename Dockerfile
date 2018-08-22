@@ -55,7 +55,7 @@ RUN \
 	make install
 RUN \
 	echo "**** configure fish shells ****" && \
-	echo '/usr/local/bin/fish' | tee -a /etc/shells > /dev/null && \
+	echo '/usr/local/bin/fish' | tee -a /etc/shells > /dev/null
 RUN \
 	echo "**** installing berryconda ****" && \
 	curl -o /tmp/berryconda.sh -L "https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh" && \
