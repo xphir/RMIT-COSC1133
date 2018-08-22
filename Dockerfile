@@ -56,11 +56,11 @@ RUN \
 RUN \
 	echo "**** configure fish shells ****" && \
 	echo '/usr/local/bin/fish' | tee -a /etc/shells > /dev/null && \
-	mkdir /home/fishy/.config/ && \
-	mkdir /home/fishy/.config/fish/ && \
-	touch /home/fishy/.config/fish/config.fish && \
+	#mkdir /home/fishy/.config/ && \
+	#mkdir /home/fishy/.config/fish/ && \
+	#touch /home/fishy/.config/fish/config.fish && \
 	echo "set -gx PATH /usr/local/bin/fish $PATH" >> /home/fishy/.config/fish/config.fish && \
-	chsh --shell /usr/local/bin/fish mrfishy
+	f
 RUN \
 	echo "**** installing berryconda ****" && \
 	curl -o /tmp/berryconda.sh -L "https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh" && \
