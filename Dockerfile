@@ -55,7 +55,7 @@ RUN \
 	make install
 RUN \
 	echo "**** configure fish shells ****" && \
-	echo '/usr/local/bin/fish' | /etc/shells && \
+	echo '/usr/local/bin/fish' | tee -a /etc/shells > /dev/null && \
 	touch /home/fishy/.config/fish/config.fish && \
 	echo "set -gx PATH /usr/local/bin/fish $PATH" >> /home/fishy/.config/fish/config.fish && \
 	chsh --shell /usr/local/bin/fish mrfishy
@@ -82,7 +82,7 @@ EXPOSE 22
 
 #CMD /start.sh
 
-#you need to run the following - docker attach <docker name> 
+#note you will need to run the following in interactive mode (-it or docker attach), as the container seems to cause issues with them
 #service ssh start && service nginx start
 #echo "mrfishy:docker" | chpasswd
 #chsh --shell /usr/local/bin/fish mrfishy
