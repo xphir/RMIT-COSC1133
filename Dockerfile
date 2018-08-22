@@ -60,7 +60,7 @@ RUN \
 	chsh --shell /usr/local/bin/fish mrfishy && \
 	su mrfishy && \
 	touch /home/fishy/.config/fish/config.fish && \
-	echo "set -x PATH $PATH usr/bin/berryconda3/bin" >> /home/fishy/.config/fish/config.fish && \
+	echo "set -x fish_user_paths usr/bin/berryconda3/bin" >> /home/fishy/.config/fish/config.fish && \
 	chown mrfishy:mrfishy /home/fishy/.config/fish/config.fish
 RUN \
 	echo "**** installing berryconda ****" && \
