@@ -55,7 +55,13 @@ RUN \
 	make install
 RUN \
 	echo "**** configure fish shells ****" && \
-	echo '/usr/local/bin/fish' | tee -a /etc/shells > /dev/null
+	echo '/usr/local/bin/fish' | tee -a /etc/shells > /dev/null && \
+	chsh --shell /usr/local/bin/fish mrfishy && \
+	su mrfishy && \
+	mkdir /home/fishy/.config/ && \
+	mkdir /home/fishy/.config/fish/ && \
+	touch /home/fishy/.config/fish/config.fish && \
+	echo "set -gx PATH /usr/local/bin/fish $PATH" >> /home/fishy/.config/fish/config.fish
 RUN \
 	echo "**** installing berryconda ****" && \
 	curl -o /tmp/berryconda.sh -L "https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh" && \
@@ -82,7 +88,4 @@ EXPOSE 22
 #note you will need to run the following in interactive mode (-it or docker attach), as the container seems to cause issues with them
 #service ssh start && service nginx start
 #echo "mrfishy:docker" | chpasswd
-#chsh --shell /usr/local/bin/fish mrfishy
-#touch /home/fishy/.config/fish/config.fish && \
-#echo "set -gx PATH /usr/local/bin/fish $PATH" >> /home/fishy/.config/fish/config.fish && \
 #chsh --shell /usr/local/bin/fish mrfishy
