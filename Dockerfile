@@ -58,8 +58,6 @@ RUN \
 	echo '/usr/local/bin/fish' | tee -a /etc/shells > /dev/null && \
 	chsh --shell /usr/local/bin/fish mrfishy && \
 	su mrfishy && \
-	mkdir /home/fishy/.config/ && \
-	mkdir /home/fishy/.config/fish/ && \
 	touch /home/fishy/.config/fish/config.fish && \
 	echo "set -gx PATH /usr/local/bin/fish $PATH" >> /home/fishy/.config/fish/config.fish
 RUN \
