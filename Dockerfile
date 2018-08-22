@@ -60,14 +60,14 @@ RUN \
 	chsh --shell /usr/local/bin/fish mrfishy && \
 	su mrfishy && \
 	touch /home/fishy/.config/fish/config.fish && \
-	echo "set -x fish_user_paths usr/bin/berryconda3/bin" >> /home/fishy/.config/fish/config.fish && \
+	echo "set -x fish_user_paths /usr/bin/berryconda3/bin" >> /home/fishy/.config/fish/config.fish && \
 	chown mrfishy:mrfishy /home/fishy/.config/fish/config.fish
 RUN \
 	echo "**** installing berryconda ****" && \
 	curl -o /tmp/berryconda.sh -L "https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh" && \
 	chmod +x /tmp/berryconda.sh && \
 	./tmp/berryconda.sh -b -p /usr/bin/berryconda3
-	#echo "PATH=/usr/bin/berryconda3/bin:$PATH" > /etc/profile.d/berryconda.sh
+	echo "PATH=/usr/bin/berryconda3/bin:$PATH" > /etc/profile.d/berryconda.sh
 RUN \
 	echo "**** cleanup ****" && \
 	apt-get clean && \
